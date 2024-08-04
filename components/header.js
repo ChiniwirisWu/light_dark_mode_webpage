@@ -1,17 +1,20 @@
 import React from "react";
-import { View, FlatList, StyleSheet, Text, Platform, TouchableHighlight } from "react-native";
+import { View, FlatList, StyleSheet, Text, Platform, TouchableHighlight, Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const HeaderItem = ({ title, index, color })=>{
+const HeaderItem = ({ title, index, color, onPress })=>{
   return (
     <View key={ index } style={ styles.item }>
-      <Text style={[ styles.text, { color: color } ]}>{ title }</Text>
+      <Pressable onPress={ () => onPress(title)}>
+        <Text style={[ styles.text, { color: color } ]}>{ title }</Text>
+      </Pressable>
     </View>
   )
 }
 
-export default function Header({ mode, onPress }){
+export default function Header({ mode, onPress, onNavigate }){
   const data = ['Home', 'Contact','Products','Wiki']
+
   return (
     <View style={ [ styles.headerContainer, { backgroundColor: (mode == 'light') ? '#fff' : '#000' } ] }>
       <View style={ styles.container }>
@@ -19,7 +22,7 @@ export default function Header({ mode, onPress }){
           horizontal
           contentContainerStyle={ styles.listContainer }
           data={ data }
-          renderItem={ ({item, index})=> <HeaderItem title={ item } index={ index } color={ (mode == 'light') ? '#000' : '#fff' } /> }
+          renderItem={ ({item, index})=> <HeaderItem title={ item } index={ index } color={ (mode == 'light') ? '#000' : '#fff' } onPress={ onNavigate } /> }
         />
       </View>
       <TouchableHighlight onPress={ ()=> onPress() } style={ styles.buttonContainer } underlayColor={ (mode == 'light') ? '#000' : '#fff' }>
